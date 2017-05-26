@@ -2,4 +2,4 @@
 
 FROM alpine:latest
 
-CMD touch /tmp/test_1
+RUN touch /tmp/test_1

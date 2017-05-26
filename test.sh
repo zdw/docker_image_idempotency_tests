@@ -63,7 +63,7 @@ docker build --no-cache -t "test_2" . | indent4
 compare_image_list
 popd
 
-echo "test_3: modify file in context, rebuild"
+echo "test_3: modify file in context, copy, rebuild"
 pushd test_3
 echo " first build of test_3"
 docker build -t "test_3" . | indent4
@@ -77,6 +77,40 @@ compare_image_list
 set_image_list
 echo " third build of test_3 (after modify file in context, --no-cache)"
 docker build --no-cache -t "test_3" . | indent4
+compare_image_list
+popd
+
+echo "test_4: modify file in context, no copy, rebuild"
+pushd test_4
+echo " first build of test_4"
+docker build -t "test_4" . | indent4
+
+set_image_list
+echo "anotherline" >> testfile
+echo " second build of test_4 (after modify file in context)"
+docker build -t "test_4" . | indent4
+compare_image_list
+
+set_image_list
+echo " third build of test_4 (after modify file in context, --no-cache)"
+docker build --no-cache -t "test_4" . | indent4
+compare_image_list
+popd
+
+echo "test_5: modify file in subdir of context, copy, rebuild"
+pushd test_5
+echo " first build of test_5"
+docker build -t "test_5" . | indent4
+
+set_image_list
+echo "anotherline" >> testdir/testfile
+echo " second build of test_5 (after modify file in context)"
+docker build -t "test_5" . | indent4
+compare_image_list
+
+set_image_list
+echo " third build of test_5 (after modify file in context, --no-cache)"
+docker build --no-cache -t "test_5" . | indent4
 compare_image_list
 popd
 
